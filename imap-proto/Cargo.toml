@@ -17,6 +17,7 @@ maintenance = { status = "passively-maintained" }
 
 [dependencies]
 nom = "7"
+serde = { version = "1.0", features = ["derive"] }
 
 [dev-dependencies]
 assert_matches = "1.3"

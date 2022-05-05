@@ -4,6 +4,7 @@ use std::ops::RangeInclusive;
 
 pub mod acls;
 pub use acls::*;
+use serde::Serialize;
 
 fn to_owned_cow<'a, T: ?Sized + ToOwned>(c: Cow<'a, T>) -> Cow<'static, T> {
     Cow::Owned(c.into_owned())
@@ -385,7 +386,8 @@ impl<'a> AttributeValue<'a> {
 }
 
 #[allow(clippy::large_enum_variant)]
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum BodyStructure<'a> {
     Basic {
         common: BodyContentCommon<'a>,
@@ -464,7 +466,8 @@ impl<'a> BodyStructure<'a> {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct BodyContentCommon<'a> {
     pub ty: ContentType<'a>,
     pub disposition: Option<ContentDisposition<'a>>,
@@ -485,7 +488,8 @@ impl<'a> BodyContentCommon<'a> {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct BodyContentSinglePart<'a> {
     pub id: Option<Cow<'a, str>>,
     pub md5: Option<Cow<'a, str>>,
@@ -506,7 +510,8 @@ impl<'a> BodyContentSinglePart<'a> {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ContentType<'a> {
     pub ty: Cow<'a, str>,
     pub subtype: Cow<'a, str>,
@@ -523,7 +528,8 @@ impl<'a> ContentType<'a> {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ContentDisposition<'a> {
     pub ty: Cow<'a, str>,
     pub params: BodyParams<'a>,
@@ -538,7 +544,8 @@ impl<'a> ContentDisposition<'a> {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum ContentEncoding<'a> {
     SevenBit,
     EightBit,
@@ -561,7 +568,8 @@ impl<'a> ContentEncoding<'a> {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum BodyExtension<'a> {
     Num(u32),
     Str(Option<Cow<'a, str>>),
@@ -593,7 +601,8 @@ fn body_param_owned<'a>(v: BodyParams<'a>) -> BodyParams<'static> {
 /// An RFC 2822 envelope
 ///
 /// See https://datatracker.ietf.org/doc/html/rfc2822#section-3.6 for more details.
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Envelope<'a> {
     pub date: Option<Cow<'a, [u8]>>,
     pub subject: Option<Cow<'a, [u8]>>,
@@ -639,7 +648,8 @@ impl<'a> Envelope<'a> {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Address<'a> {
     pub name: Option<Cow<'a, [u8]>>,
     pub adl: Option<Cow<'a, [u8]>>,
